@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsistenteIA.ViewModels"
+             xmlns:views="clr-namespace:AsistenteIA.Views"
+             x:Class="AsistenteIA.Views.DetailPage"
+             x:DataType="vm:DetailViewModel"
+             Title="Detalle">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12" MaximumWidthRequest="720">
+            <views:MessageBanner />
+
+            <VerticalStackLayout IsVisible="{Binding Found}" Spacing="12">
+                <Label Text="Consulta" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level2" />
+                <Label Text="{Binding Prompt}" />
+
+                <Label Text="Respuesta (editable)" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level2" />
+                <Editor Text="{Binding Answer}" AutoSize="TextChanges" MinimumHeightRequest="120" />
+
+                <Label Text="{Binding CreatedAtText, StringFormat='Fecha: {0}'}" FontSize="13" />
+                <Label Text="{Binding SourceText, StringFormat='Origen: {0}'}" FontSize="13" IsVisible="{Binding HasSource}" />
+
+                <Label Text="Categoría" FontAttributes="Bold" />
+                <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Title="Categoría" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <CheckBox IsChecked="{Binding IsVerified}" SemanticProperties.Description="Respuesta verificada" />
+                    <Label Text="Respuesta verificada por mí" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Button Text="Guardar cambios" Command="{Binding SaveChangesCommand}" />
+                <Button Text="Eliminar registro" Command="{Binding AskDeleteCommand}" BackgroundColor="#C62828" TextColor="White" />
+
+                <Border IsVisible="{Binding IsConfirmingDelete}" Padding="12" StrokeShape="RoundRectangle 8"
+                        BackgroundColor="{AppThemeBinding Light=#FDECEA, Dark=#3A1818}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="¿Eliminar este registro? Esta acción no se puede deshacer." />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button Grid.Column="0" Text="Sí, eliminar" Command="{Binding ConfirmDeleteCommand}" BackgroundColor="#C62828" TextColor="White" />
+                            <Button Grid.Column="1" Text="Cancelar" Command="{Binding CancelDeleteCommand}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

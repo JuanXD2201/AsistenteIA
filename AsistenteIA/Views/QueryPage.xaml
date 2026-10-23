@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsistenteIA.ViewModels"
+             xmlns:views="clr-namespace:AsistenteIA.Views"
+             x:Class="AsistenteIA.Views.QueryPage"
+             x:DataType="vm:QueryViewModel"
+             Title="Consultar IA">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" MaximumWidthRequest="720">
+            <Label Text="Consultar IA" FontSize="26" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level1" />
+
+            <Border IsVisible="{Binding NeedsConfiguration}" Padding="12" StrokeShape="RoundRectangle 8"
+                    BackgroundColor="{AppThemeBinding Light=#FFF4E5, Dark=#3A2A10}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="La IA no está lista. Configura y valida tu API key para poder consultar." />
+                    <Button Text="Ir a Configuración" Command="{Binding GoToSettingsCommand}" HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Tu consulta" FontAttributes="Bold" />
+            <Editor Text="{Binding Prompt}" Placeholder="Escribe tu pregunta…" AutoSize="TextChanges"
+                    MinimumHeightRequest="110" MaxLength="{Binding MaxLength}" IsEnabled="{Binding IsNotBusy}"
+                    SemanticProperties.Description="Campo de consulta para la IA" />
+            <Label Text="{Binding PromptLength, StringFormat='{0} caracteres'}" FontSize="12" HorizontalOptions="End" />
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0" Text="Enviar" Command="{Binding SendCommand}" IsEnabled="{Binding IsNotBusy}" />
+                <Button Grid.Column="1" Text="Limpiar" Command="{Binding ClearCommand}" IsEnabled="{Binding IsNotBusy}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                        TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+            </Grid>
+
+            <HorizontalStackLayout IsVisible="{Binding IsBusy}" Spacing="12">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" SemanticProperties.Description="Esperando respuesta" />
+                <Label Text="Esperando respuesta…" VerticalOptions="Center" />
+                <Button Text="Cancelar" Command="{Binding CancelCommand}" />
+            </HorizontalStackLayout>
+
+            <views:MessageBanner />
+
+            <VerticalStackLayout IsVisible="{Binding HasAnswer}" Spacing="10">
+                <Label Text="Respuesta" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level2" />
+                <Border Padding="14" StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}">
+                    <Label Text="{Binding Answer}" />
+                </Border>
+                <Label Text="Las respuestas de IA pueden ser incorrectas: verifícalas antes de usarlas." FontSize="12" />
+                <Label Text="Categoría" FontAttributes="Bold" />
+                <Picker ItemsSource="{x:Static vm:QueryViewModel.Categories}" SelectedItem="{Binding SelectedCategory}"
+                        Title="Categoría" />
+                <Button Text="Guardar en historial" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

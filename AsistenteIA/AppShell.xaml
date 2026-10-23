@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="AsistenteIA.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:AsistenteIA.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="AsistenteIA">
+
+    <TabBar>
+        <ShellContent Title="Inicio" Route="home" ContentTemplate="{DataTemplate views:HomePage}" />
+        <ShellContent Title="Consultar" Route="query" ContentTemplate="{DataTemplate views:QueryPage}" />
+        <ShellContent Title="Historial" Route="history" ContentTemplate="{DataTemplate views:HistoryPage}" />
+        <ShellContent Title="Configuración" Route="settings" ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </TabBar>
+
+</Shell>

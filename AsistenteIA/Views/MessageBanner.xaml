@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AsistenteIA.Views.MessageBanner">
+    <!-- Hereda el BindingContext del ViewModel de la página: Message, IsError y HasMessage (BaseViewModel). -->
+    <Border IsVisible="{Binding HasMessage}"
+            Padding="12"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            Stroke="{AppThemeBinding Light=#2E7D32, Dark=#81C784}"
+            BackgroundColor="{AppThemeBinding Light=#E8F5E9, Dark=#16301A}">
+        <Border.Triggers>
+            <DataTrigger TargetType="Border" Binding="{Binding IsError}" Value="True">
+                <Setter Property="Stroke" Value="{AppThemeBinding Light=#C62828, Dark=#EF9A9A}" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FDECEA, Dark=#3A1818}" />
+            </DataTrigger>
+        </Border.Triggers>
+        <Label Text="{Binding Message}"
+               TextColor="{AppThemeBinding Light=#1B1B1B, Dark=#F2F2F2}" />
+    </Border>
+</ContentView>
