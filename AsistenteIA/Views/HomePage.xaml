@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsistenteIA.ViewModels"
+             xmlns:views="clr-namespace:AsistenteIA.Views"
+             x:Class="AsistenteIA.Views.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Title="Inicio">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16" MaximumWidthRequest="720">
+            <Label Text="AsistenteIA" FontSize="30" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                   SemanticProperties.HeadingLevel="Level1" />
+            <Label Text="Consulta a una IA con tu propia API key y guarda las respuestas útiles en un historial local."
+                   FontSize="16" />
+
+            <Border Padding="16" StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Estado de la IA" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level2" />
+                    <Label Text="{Binding StatusText}" />
+                    <Label Text="{Binding HistoryCount, StringFormat='Consultas guardadas: {0}'}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <views:MessageBanner />
+
+            <Button Text="Consultar IA" Command="{Binding GoToQueryCommand}" IsEnabled="{Binding IsReady}"
+                    SemanticProperties.Hint="Abre la pantalla para enviar una consulta" />
+            <Button Text="Ver historial" Command="{Binding GoToHistoryCommand}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                    TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+            <Button Text="Configurar API key" Command="{Binding GoToSettingsCommand}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                    TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

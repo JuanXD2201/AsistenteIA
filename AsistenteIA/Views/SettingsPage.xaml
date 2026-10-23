@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsistenteIA.ViewModels"
+             xmlns:models="clr-namespace:AsistenteIA.Core.Models;assembly=AsistenteIA.Core"
+             xmlns:views="clr-namespace:AsistenteIA.Views"
+             x:Class="AsistenteIA.Views.SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Title="Configuración">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12" MaximumWidthRequest="720">
+            <Label Text="Configuración" FontSize="26" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level1" />
+            <Label Text="La clave se guarda cifrada en el dispositivo (SecureStorage) y solo se envía al proveedor que elijas." FontSize="13" />
+
+            <Label Text="API key" FontAttributes="Bold" />
+            <Entry Text="{Binding ApiKey}" IsPassword="True" Placeholder="Pega tu API key" Keyboard="Plain"
+                   IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
+                   SemanticProperties.Description="Campo oculto para la API key" />
+            <Label Text="Hay una clave guardada en este dispositivo." IsVisible="{Binding HasSavedKey}" FontSize="13" />
+
+            <Button Text="Detectar proveedor" Command="{Binding DetectProviderCommand}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                    TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+
+            <Label Text="Proveedor" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}" ItemDisplayBinding="{Binding Name, x:DataType=models:AiProviderInfo}"
+                    Title="Elige un proveedor" />
+            <Label Text="Si la clave no tiene un formato reconocible, elige el proveedor manualmente: algunos formatos son indistinguibles." FontSize="12" />
+            <Label Text="{Binding KeyUrl, StringFormat='Obtener clave: {0}'}" FontSize="12" IsVisible="{Binding HasProvider}" />
+
+            <Label Text="Modelo" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" Title="Modelo" IsEnabled="{Binding HasProvider}" />
+            <Button Text="Cargar modelos" Command="{Binding LoadModelsCommand}" IsEnabled="{Binding IsNotBusy}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                    TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+
+            <Label Text="{Binding ValidationText, StringFormat='Estado: {0}'}" FontAttributes="Bold" />
+
+            <HorizontalStackLayout IsVisible="{Binding IsBusy}" Spacing="12">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" SemanticProperties.Description="Procesando" />
+                <Button Text="Cancelar" Command="{Binding CancelRequestCommand}" />
+            </HorizontalStackLayout>
+
+            <views:MessageBanner />
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0" Text="Probar conexión" Command="{Binding TestCommand}" IsEnabled="{Binding IsNotBusy}" />
+                <Button Grid.Column="1" Text="Guardar" Command="{Binding SaveCommand}" IsEnabled="{Binding IsNotBusy}" />
+            </Grid>
+
+            <Button Text="Cambiar clave" Command="{Binding ChangeKeyCommand}" IsVisible="{Binding HasSavedKey}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"
+                    TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+            <Button Text="Eliminar clave" Command="{Binding AskDeleteCommand}" IsVisible="{Binding HasSavedKey}"
+                    BackgroundColor="#C62828" TextColor="White" />
+
+            <Border IsVisible="{Binding IsConfirmingDelete}" Padding="12" StrokeShape="RoundRectangle 8"
+                    BackgroundColor="{AppThemeBinding Light=#FDECEA, Dark=#3A1818}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="¿Eliminar la clave de este dispositivo? Tendrás que pegarla de nuevo para usar la IA." />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0" Text="Sí, eliminar" Command="{Binding ConfirmDeleteCommand}" BackgroundColor="#C62828" TextColor="White" />
+                        <Button Grid.Column="1" Text="Cancelar" Command="{Binding CancelDeleteCommand}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

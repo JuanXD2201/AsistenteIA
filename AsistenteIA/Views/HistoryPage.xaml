@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsistenteIA.ViewModels"
+             xmlns:models="clr-namespace:AsistenteIA.Core.Models;assembly=AsistenteIA.Core"
+             xmlns:views="clr-namespace:AsistenteIA.Views"
+             x:Class="AsistenteIA.Views.HistoryPage"
+             x:DataType="vm:HistoryViewModel"
+             Title="Historial">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20" RowSpacing="12" MaximumWidthRequest="720">
+        <Label Grid.Row="0" Text="Historial" FontSize="26" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level1" />
+        <SearchBar Grid.Row="1" Text="{Binding SearchText}" Placeholder="Buscar en consultas, respuestas o categorías"
+                   SemanticProperties.Description="Filtrar historial" />
+        <views:MessageBanner Grid.Row="2" />
+
+        <CollectionView x:Name="List" Grid.Row="3" ItemsSource="{Binding Items}" SelectionMode="Single"
+                        SelectionChangedCommand="{Binding OpenCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                        IsVisible="{Binding IsNotBusy}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="0,40" Spacing="6">
+                    <Label Text="Sin resultados" FontAttributes="Bold" HorizontalOptions="Center" />
+                    <Label Text="Guarda una respuesta desde Consultar IA o cambia la búsqueda." HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:HistoryEntry">
+                    <Border Padding="14" StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding Prompt}" FontAttributes="Bold" LineBreakMode="TailTruncation" MaxLines="2" />
+                            <Label Text="{Binding Answer}" LineBreakMode="TailTruncation" MaxLines="2" />
+                            <Label Text="{Binding Category}" FontSize="12"
+                                   TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator Grid.Row="3" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Start" HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>
