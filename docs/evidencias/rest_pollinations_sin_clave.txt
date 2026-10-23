@@ -1,0 +1,11 @@
+# Evidencia real de consumo REST (ejecutada 2026-10-23T20:24Z) - sin API key
+
+## GET https://gen.pollinations.ai/v1/models
+HTTP 200
+modelos totales: 388 | modelos de texto: 242
+ejemplo (texto): [('openai/gpt-5.4-nano', 'paid_only=False'), ('deepseek/deepseek-v4.1-flash-1017', 'paid_only=True'), ('google/gemini-4-argon', 'paid_only=True'), ('meta/muse-wonder-1.0', 'paid_only=True'), ('anthropic/claude-opus-5.5:fast', 'paid_only=True')]
+
+## POST https://gen.pollinations.ai/v1/chat/completions (sin encabezado Authorization)
+Cuerpo: {"model":"openai","messages":[{"role":"user","content":"ping"}],"max_tokens":1}
+{"success":false,"error":{"message":"A valid API key is required. Get one at https://enter.pollinations.ai/keys, or buy one with USDC (x402) at https://enter.pollinations.ai/api/x402/keys","code":"UNAUTHORIZED","timestamp":"2026-10-23T20:24:18.062Z"},"status":401}
+HTTP 401
