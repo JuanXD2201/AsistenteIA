@@ -1,0 +1,35 @@
+## Visual Studio / .NET / MAUI
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+.idea/
+TestResults/
+*.log
+*.nupkg
+publish/
+
+## Android
+*.apk
+*.aab
+*.keystore
+*.jks
+local.properties
+
+## Secretos y archivos locales
+.env
+.env.*
+*.pfx
+*.pem
+*.key
+secrets.json
+appsettings.*.local.json
+*.db3
+*.db3-wal
+*.db3-shm
+
+## Temporales de Office
+~$*
