@@ -9,7 +9,7 @@ public class ClientTests
     private static readonly AiProviderInfo Provider = ProviderCatalog.Pollinations;
     private const string OkBody = "{\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\" Hola \"}}]}";
 
-    private static OpenAiCompatibleClient Client(FakeHandler h, TimeSpan? timeout = null) => new(new HttpClient(h), timeout);
+    private static ChatCompletionsClient Client(FakeHandler h, TimeSpan? timeout = null) => new(new HttpClient(h), timeout);
 
     [Fact]
     public async Task Chat_200_ReturnsTrimmedText_AndSendsBearerAndModel()

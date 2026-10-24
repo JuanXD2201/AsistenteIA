@@ -21,15 +21,7 @@ public static class ProviderDetector
         if (key.StartsWith("AQ.", StringComparison.Ordinal) && key.Length >= 30)
             return ProviderCatalog.Gemini;
 
-        // Claves de Anthropic usan "sk-ant-": no hay adaptador, no se confunde con OpenAI.
-        if (key.StartsWith("sk-ant-", StringComparison.Ordinal)) return null;
-
-        // OpenAI: "sk-" / "sk-proj-". Otros servicios también usan "sk-", pero el prefijo
-        // es la única señal local; el usuario puede corregirlo con el selector.
-        if (key.StartsWith("sk-", StringComparison.Ordinal) && key.Length >= 20)
-            return ProviderCatalog.OpenAi;
-
-        // Pollinations y el resto: formato no distinguible de forma fiable.
+        // Pollinations y cualquier otro formato: no distinguible de forma fiable; la UI pide elegir el proveedor.
         return null;
     }
 }

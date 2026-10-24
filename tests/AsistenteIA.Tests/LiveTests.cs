@@ -12,7 +12,7 @@ public class LiveTests
     public async Task Live_Pollinations_ModelsCatalog_IsPublic()
     {
         if (!Enabled) return;
-        var client = new OpenAiCompatibleClient(new HttpClient());
+        var client = new ChatCompletionsClient(new HttpClient());
         var result = await client.ListModelsAsync(ProviderCatalog.Pollinations, null);
         Assert.True(result.Success, result.Message);
         Assert.Equal(200, result.HttpStatus);
@@ -23,7 +23,7 @@ public class LiveTests
     public async Task Live_Pollinations_InvalidKey_Returns401()
     {
         if (!Enabled) return;
-        var client = new OpenAiCompatibleClient(new HttpClient());
+        var client = new ChatCompletionsClient(new HttpClient());
         var result = await client.SendChatAsync(ProviderCatalog.Pollinations, "clave-falsa-de-prueba", "openai", "ping", 1);
         Assert.False(result.Success);
         Assert.Equal(AiErrorKind.Unauthorized, result.Error);

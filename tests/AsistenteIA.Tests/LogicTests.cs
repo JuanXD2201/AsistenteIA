@@ -37,13 +37,14 @@ public class LogicTests
         => Assert.Same(ProviderCatalog.Gemini, ProviderDetector.Detect("AQ." + new string('x', 40)));
 
     [Fact]
-    public void Detector_OpenAi_ByPrefix()
-        => Assert.Same(ProviderCatalog.OpenAi, ProviderDetector.Detect("sk-proj-" + new string('x', 30)));
+    public void Catalog_OnlyGeminiAndPollinations()
+        => Assert.Equal(new[] { "gemini", "pollinations" }, ProviderCatalog.All.Select(p => p.Id));
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData("abc123")]
+    [InlineData("sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")]
     [InlineData("sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxx")]
     [InlineData("AIzaShort")]
     public void Detector_Ambiguous_ReturnsNull(string? key) => Assert.Null(ProviderDetector.Detect(key));
@@ -144,7 +145,7 @@ public class LogicTests
         var handler = FakeHandler.Status(HttpStatusCode.OK, "{\"choices\":[{\"message\":{\"content\":\"ok\"}}]}");
         var config = new AiConfigService(new MemorySecrets(), new MemorySettings());
         await config.SaveAsync("k", ProviderCatalog.Pollinations, "mi-modelo", true);
-        var service = new AiService(new OpenAiCompatibleClient(new HttpClient(handler)), config);
+        var service = new AiService(new ChatCompletionsClient(new HttpClient(handler)), config);
 
         var result = await service.AskAsync(" hola ");
 
