@@ -19,9 +19,9 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		// Un único HttpClient reutilizable; el timeout lo controla OpenAiCompatibleClient.
+		// Un único HttpClient reutilizable; el timeout lo controla ChatCompletionsClient.
 		builder.Services.AddSingleton(new HttpClient { Timeout = Timeout.InfiniteTimeSpan });
-		builder.Services.AddSingleton<IAiClient>(sp => new OpenAiCompatibleClient(sp.GetRequiredService<HttpClient>()));
+		builder.Services.AddSingleton<IAiClient>(sp => new ChatCompletionsClient(sp.GetRequiredService<HttpClient>()));
 		builder.Services.AddSingleton<ISecretStore, MauiSecretStore>();
 		builder.Services.AddSingleton<ISettingsStore, MauiSettingsStore>();
 		builder.Services.AddSingleton<AiConfigService>();

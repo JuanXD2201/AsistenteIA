@@ -7,10 +7,10 @@ using AsistenteIA.Core.Models;
 namespace AsistenteIA.Core.Services;
 
 /// <summary>
-/// Cliente REST para APIs compatibles con OpenAI Chat Completions.
+/// Cliente REST para APIs con el esquema Chat Completions.
 /// La clave se envía solo en el encabezado Authorization de la solicitud al proveedor elegido.
 /// </summary>
-public sealed class OpenAiCompatibleClient : IAiClient
+public sealed class ChatCompletionsClient : IAiClient
 {
     public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(60);
 
@@ -22,7 +22,7 @@ public sealed class OpenAiCompatibleClient : IAiClient
     private readonly HttpClient _http;
     private readonly TimeSpan _timeout;
 
-    public OpenAiCompatibleClient(HttpClient http, TimeSpan? timeout = null)
+    public ChatCompletionsClient(HttpClient http, TimeSpan? timeout = null)
     {
         _http = http;
         _timeout = timeout ?? DefaultTimeout;
