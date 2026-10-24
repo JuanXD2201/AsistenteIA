@@ -26,7 +26,7 @@ public sealed class LiveKeyTests : IDisposable
         var secrets = new MemorySecrets();
         var settings = new MemorySettings();
         var cfg = new AiConfigService(secrets, settings);
-        return (new AiService(new OpenAiCompatibleClient(new HttpClient()), cfg), cfg, secrets, settings);
+        return (new AiService(new ChatCompletionsClient(new HttpClient()), cfg), cfg, secrets, settings);
     }
 
     [Fact]
